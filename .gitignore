@@ -25,6 +25,13 @@ frontend/dist/
 # npm 本地缓存
 .npm-cache/
 
+# 运行时数据
+agent/data/
+data/external/
+
+# Trace 文件
+logs/traces/
+
 # 操作系统
 Thumbs.db
 .DS_Store
