@@ -1,0 +1,8 @@
+external_data_path: data/external/records.csv
+
+
+# 会话管理
+session:
+  max_rounds: 20            # 最大对话轮次
+  ttl_minutes: 30           # 会话闲置超时（分钟）
+  cleanup_interval: 60      # 后台清理间隔（秒）

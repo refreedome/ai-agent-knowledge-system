@@ -1,0 +1,572 @@
+2026-07-10 17:20:41,156 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 小户型适合哪些扫地机器人？...
+2026-07-10 17:20:41,156 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 1, 即将调用模型
+2026-07-10 17:20:42,638 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '小户型 扫地机器人 选购'}}
+2026-07-10 17:20:45,851 - agent - INFO - knowledge_tools.py:73 - [KnowledgeSearchTool] 检索到 0 条参考来源
+2026-07-10 17:20:45,851 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 3.213s
+2026-07-10 17:20:45,852 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 3, 即将调用模型
+2026-07-10 17:20:51,930 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 它的续航怎么样？...
+2026-07-10 17:20:51,930 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 3, 即将调用模型
+2026-07-10 17:20:56,362 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '小户型扫地机器人续航时间推荐'}}
+2026-07-10 17:20:58,792 - agent - INFO - knowledge_tools.py:73 - [KnowledgeSearchTool] 检索到 0 条参考来源
+2026-07-10 17:20:58,792 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 2.430s
+2026-07-10 17:20:58,793 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 5, 即将调用模型
+2026-07-10 17:21:03,120 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 那价格大概多少？...
+2026-07-10 17:21:03,121 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 5, 即将调用模型
+2026-07-10 17:21:06,205 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '小户型扫地机器人价格推荐'}}
+2026-07-10 17:21:09,769 - agent - INFO - knowledge_tools.py:73 - [KnowledgeSearchTool] 检索到 0 条参考来源
+2026-07-10 17:21:09,770 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 3.564s
+2026-07-10 17:21:09,770 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 7, 即将调用模型
+2026-07-10 17:27:37,255 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 小户型适合哪些扫地机器人？...
+2026-07-10 17:27:37,255 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 1, 即将调用模型
+2026-07-10 17:27:38,628 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '小户型 扫地机器人 选购'}}
+2026-07-10 17:27:39,017 - agent - INFO - knowledge_tools.py:71 - [DEBUG] 全新 VectorStoreService 检索: 0 条
+2026-07-10 17:27:43,142 - agent - INFO - knowledge_tools.py:78 - [KnowledgeSearchTool] retriever_docs: 0 条
+2026-07-10 17:27:43,142 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 4.514s
+2026-07-10 17:27:43,143 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 3, 即将调用模型
+2026-07-10 17:27:44,386 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '小户型适用的扫地机器人推荐'}}
+2026-07-10 17:27:44,771 - agent - INFO - knowledge_tools.py:71 - [DEBUG] 全新 VectorStoreService 检索: 0 条
+2026-07-10 17:27:46,537 - agent - INFO - knowledge_tools.py:78 - [KnowledgeSearchTool] retriever_docs: 0 条
+2026-07-10 17:27:46,538 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 2.152s
+2026-07-10 17:27:46,538 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 5, 即将调用模型
+2026-07-10 17:27:53,488 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 它的续航怎么样？...
+2026-07-10 17:27:53,488 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 3, 即将调用模型
+2026-07-10 17:28:00,431 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 那价格大概多少？...
+2026-07-10 17:28:00,431 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 5, 即将调用模型
+2026-07-10 17:28:04,804 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: rag_summarize, 参数: {'query': '小户型适用扫地机器人价格推荐 2025'}
+2026-07-10 17:28:04,805 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: rag_summarize, 耗时: 0.000s
+2026-07-10 17:28:04,806 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 7, 即将调用模型
+2026-07-10 17:28:07,501 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '小户型适用扫地机器人价格推荐 2025'}}
+2026-07-10 17:28:07,897 - agent - INFO - knowledge_tools.py:71 - [DEBUG] 全新 VectorStoreService 检索: 0 条
+2026-07-10 17:28:10,107 - agent - INFO - knowledge_tools.py:78 - [KnowledgeSearchTool] retriever_docs: 0 条
+2026-07-10 17:28:10,108 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 2.607s
+2026-07-10 17:28:10,108 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 9, 即将调用模型
+2026-07-10 17:29:48,054 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 小户型适合哪些扫地机器人？...
+2026-07-10 17:29:48,055 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 1, 即将调用模型
+2026-07-10 17:29:50,185 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '小户型 扫地机器人 选购'}}
+2026-07-10 17:29:50,186 - agent - INFO - knowledge_tools.py:69 - [DEBUG] cwd: D:\AI大模型RAG与智能体开发_Agent项目\agent
+2026-07-10 17:29:50,186 - agent - INFO - knowledge_tools.py:70 - [DEBUG] persist_directory: chroma_db
+2026-07-10 17:29:50,186 - agent - INFO - knowledge_tools.py:71 - [DEBUG] chroma_db 绝对路径: D:\AI大模型RAG与智能体开发_Agent项目\agent\chroma_db
+2026-07-10 17:29:50,186 - agent - INFO - knowledge_tools.py:72 - [DEBUG] 文件存在: True
+2026-07-10 17:29:50,186 - agent - INFO - knowledge_tools.py:73 - [DEBUG] 集合名: agent
+2026-07-10 17:29:50,192 - agent - INFO - knowledge_tools.py:77 - [DEBUG] collection count: 0
+2026-07-10 17:29:50,584 - agent - INFO - knowledge_tools.py:79 - [DEBUG] 全新 VectorStoreService 检索: 0 条
+2026-07-10 17:29:54,964 - agent - INFO - knowledge_tools.py:86 - [KnowledgeSearchTool] retriever_docs: 0 条
+2026-07-10 17:29:54,964 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 4.779s
+2026-07-10 17:29:54,965 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 3, 即将调用模型
+2026-07-10 17:29:56,187 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '小户型适用的扫地机器人推荐'}}
+2026-07-10 17:29:56,187 - agent - INFO - knowledge_tools.py:69 - [DEBUG] cwd: D:\AI大模型RAG与智能体开发_Agent项目\agent
+2026-07-10 17:29:56,187 - agent - INFO - knowledge_tools.py:70 - [DEBUG] persist_directory: chroma_db
+2026-07-10 17:29:56,187 - agent - INFO - knowledge_tools.py:71 - [DEBUG] chroma_db 绝对路径: D:\AI大模型RAG与智能体开发_Agent项目\agent\chroma_db
+2026-07-10 17:29:56,187 - agent - INFO - knowledge_tools.py:72 - [DEBUG] 文件存在: True
+2026-07-10 17:29:56,187 - agent - INFO - knowledge_tools.py:73 - [DEBUG] 集合名: agent
+2026-07-10 17:29:56,190 - agent - INFO - knowledge_tools.py:77 - [DEBUG] collection count: 0
+2026-07-10 17:29:56,550 - agent - INFO - knowledge_tools.py:79 - [DEBUG] 全新 VectorStoreService 检索: 0 条
+2026-07-10 17:29:58,464 - agent - INFO - knowledge_tools.py:86 - [KnowledgeSearchTool] retriever_docs: 0 条
+2026-07-10 17:29:58,465 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 2.278s
+2026-07-10 17:29:58,465 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 5, 即将调用模型
+2026-07-10 17:29:59,701 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '扫地机器人 小户型 选择建议'}}
+2026-07-10 17:29:59,701 - agent - INFO - knowledge_tools.py:69 - [DEBUG] cwd: D:\AI大模型RAG与智能体开发_Agent项目\agent
+2026-07-10 17:29:59,701 - agent - INFO - knowledge_tools.py:70 - [DEBUG] persist_directory: chroma_db
+2026-07-10 17:29:59,701 - agent - INFO - knowledge_tools.py:71 - [DEBUG] chroma_db 绝对路径: D:\AI大模型RAG与智能体开发_Agent项目\agent\chroma_db
+2026-07-10 17:29:59,701 - agent - INFO - knowledge_tools.py:72 - [DEBUG] 文件存在: True
+2026-07-10 17:29:59,702 - agent - INFO - knowledge_tools.py:73 - [DEBUG] 集合名: agent
+2026-07-10 17:29:59,704 - agent - INFO - knowledge_tools.py:77 - [DEBUG] collection count: 0
+2026-07-10 17:30:00,122 - agent - INFO - knowledge_tools.py:79 - [DEBUG] 全新 VectorStoreService 检索: 0 条
+2026-07-10 17:30:03,530 - agent - INFO - knowledge_tools.py:86 - [KnowledgeSearchTool] retriever_docs: 0 条
+2026-07-10 17:30:03,530 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 3.829s
+2026-07-10 17:30:03,531 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 7, 即将调用模型
+2026-07-10 17:30:04,468 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 它的续航怎么样？...
+2026-07-10 17:30:04,468 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 3, 即将调用模型
+2026-07-10 17:30:05,767 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 那价格大概多少？...
+2026-07-10 17:30:05,767 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 5, 即将调用模型
+2026-07-10 17:31:52,422 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 小户型适合哪些扫地机器人？...
+2026-07-10 17:31:52,422 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 1, 即将调用模型
+2026-07-10 17:31:54,506 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '小户型 扫地机器人 选购'}}
+2026-07-10 17:31:54,506 - agent - INFO - knowledge_tools.py:69 - [DEBUG] cwd: D:\AI大模型RAG与智能体开发_Agent项目\agent
+2026-07-10 17:31:54,506 - agent - INFO - knowledge_tools.py:70 - [DEBUG] persist_directory: chroma_db
+2026-07-10 17:31:54,506 - agent - INFO - knowledge_tools.py:71 - [DEBUG] chroma_db 绝对路径: D:\AI大模型RAG与智能体开发_Agent项目\agent\chroma_db
+2026-07-10 17:31:54,506 - agent - INFO - knowledge_tools.py:72 - [DEBUG] 文件存在: True
+2026-07-10 17:31:54,506 - agent - INFO - knowledge_tools.py:73 - [DEBUG] 集合名: agent
+2026-07-10 17:31:54,550 - agent - INFO - knowledge_tools.py:77 - [DEBUG] collection count: 293
+2026-07-10 17:31:54,930 - agent - INFO - knowledge_tools.py:79 - [DEBUG] 全新 VectorStoreService 检索: 3 条
+2026-07-10 17:31:58,123 - agent - INFO - knowledge_tools.py:86 - [KnowledgeSearchTool] retriever_docs: 3 条
+2026-07-10 17:31:58,123 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 3.617s
+2026-07-10 17:31:58,124 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 3, 即将调用模型
+2026-07-10 17:31:59,881 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '小户型适用的扫地机器人推荐'}}
+2026-07-10 17:31:59,882 - agent - INFO - knowledge_tools.py:69 - [DEBUG] cwd: D:\AI大模型RAG与智能体开发_Agent项目\agent
+2026-07-10 17:31:59,882 - agent - INFO - knowledge_tools.py:70 - [DEBUG] persist_directory: chroma_db
+2026-07-10 17:31:59,882 - agent - INFO - knowledge_tools.py:71 - [DEBUG] chroma_db 绝对路径: D:\AI大模型RAG与智能体开发_Agent项目\agent\chroma_db
+2026-07-10 17:31:59,882 - agent - INFO - knowledge_tools.py:72 - [DEBUG] 文件存在: True
+2026-07-10 17:31:59,882 - agent - INFO - knowledge_tools.py:73 - [DEBUG] 集合名: agent
+2026-07-10 17:31:59,886 - agent - INFO - knowledge_tools.py:77 - [DEBUG] collection count: 293
+2026-07-10 17:32:00,334 - agent - INFO - knowledge_tools.py:79 - [DEBUG] 全新 VectorStoreService 检索: 3 条
+2026-07-10 17:32:03,615 - agent - INFO - knowledge_tools.py:86 - [KnowledgeSearchTool] retriever_docs: 3 条
+2026-07-10 17:32:03,616 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 3.734s
+2026-07-10 17:32:03,616 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 5, 即将调用模型
+2026-07-10 17:32:04,981 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '扫地机器人 小户型 选择建议'}}
+2026-07-10 17:32:04,981 - agent - INFO - knowledge_tools.py:69 - [DEBUG] cwd: D:\AI大模型RAG与智能体开发_Agent项目\agent
+2026-07-10 17:32:04,981 - agent - INFO - knowledge_tools.py:70 - [DEBUG] persist_directory: chroma_db
+2026-07-10 17:32:04,981 - agent - INFO - knowledge_tools.py:71 - [DEBUG] chroma_db 绝对路径: D:\AI大模型RAG与智能体开发_Agent项目\agent\chroma_db
+2026-07-10 17:32:04,981 - agent - INFO - knowledge_tools.py:72 - [DEBUG] 文件存在: True
+2026-07-10 17:32:04,981 - agent - INFO - knowledge_tools.py:73 - [DEBUG] 集合名: agent
+2026-07-10 17:32:04,985 - agent - INFO - knowledge_tools.py:77 - [DEBUG] collection count: 293
+2026-07-10 17:32:05,372 - agent - INFO - knowledge_tools.py:79 - [DEBUG] 全新 VectorStoreService 检索: 3 条
+2026-07-10 17:32:10,893 - agent - INFO - knowledge_tools.py:86 - [KnowledgeSearchTool] retriever_docs: 3 条
+2026-07-10 17:32:10,893 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 5.913s
+2026-07-10 17:32:10,894 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 7, 即将调用模型
+2026-07-10 17:32:17,153 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 它的续航怎么样？...
+2026-07-10 17:32:17,154 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 3, 即将调用模型
+2026-07-10 17:32:26,041 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 那价格大概多少？...
+2026-07-10 17:32:26,041 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 5, 即将调用模型
+2026-07-10 18:05:06,083 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 小户型适合哪些扫地机器人？...
+2026-07-10 18:05:06,084 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 1, 即将调用模型
+2026-07-10 18:05:07,923 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '小户型 扫地机器人 选购'}}
+2026-07-10 18:05:10,322 - agent - INFO - knowledge_tools.py:71 - [KnowledgeSearchTool] 检索到 3 条参考来源
+2026-07-10 18:05:10,322 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.7196
+2026-07-10 18:05:10,322 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\扫拖一体机器人100问.txt, 分数: 0.5545
+2026-07-10 18:05:10,322 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\扫拖一体机器人100问.txt, 分数: 0.5543
+2026-07-10 18:05:10,322 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 2.399s
+2026-07-10 18:05:10,323 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 3, 即将调用模型
+2026-07-10 18:05:19,362 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 它的续航怎么样？...
+2026-07-10 18:05:19,362 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 3, 即将调用模型
+2026-07-10 18:05:26,463 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 那价格大概多少？...
+2026-07-10 18:05:26,463 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 5, 即将调用模型
+2026-07-10 18:14:13,632 - agent - INFO - session_manager.py:63 - [SessionManager] 初始化: max_rounds=20, ttl=30min, cleanup_interval=60s
+2026-07-10 18:14:13,633 - agent - INFO - session_manager.py:153 - [SessionManager] 后台清理线程已启动 (间隔: 60s)
+2026-07-10 18:14:13,856 - agent - INFO - session_manager.py:77 - [SessionManager] 创建会话: 7427aa09
+2026-07-10 18:15:20,066 - agent - INFO - session_manager.py:62 - [SessionManager] 初始化: max_rounds=20, ttl=30min, cleanup_interval=60s
+2026-07-10 18:15:20,067 - agent - INFO - session_manager.py:152 - [SessionManager] 后台清理线程已启动 (间隔: 60s)
+2026-07-10 18:15:20,268 - agent - INFO - session_manager.py:76 - [SessionManager] 创建会话: 04c5ea53
+2026-07-10 18:15:20,270 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 小户型适合哪些扫地机器人？...
+2026-07-10 18:15:20,270 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 1, 即将调用模型
+2026-07-10 18:15:25,971 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '小户型 扫地机器人 选购建议 推荐'}}
+2026-07-10 18:15:29,336 - agent - INFO - knowledge_tools.py:71 - [KnowledgeSearchTool] 检索到 3 条参考来源
+2026-07-10 18:15:29,336 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.7050
+2026-07-10 18:15:29,336 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\扫拖一体机器人100问.txt, 分数: 0.5911
+2026-07-10 18:15:29,336 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.5717
+2026-07-10 18:15:29,336 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 3.365s
+2026-07-10 18:15:29,337 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 3, 即将调用模型
+2026-07-10 18:15:38,443 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 它的续航怎么样？...
+2026-07-10 18:15:38,444 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 3, 即将调用模型
+2026-07-10 18:15:44,110 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '小户型扫地机器人续航时间 电池容量'}}
+2026-07-10 18:15:46,952 - agent - INFO - knowledge_tools.py:71 - [KnowledgeSearchTool] 检索到 3 条参考来源
+2026-07-10 18:15:46,952 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.5207
+2026-07-10 18:15:46,952 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.5088
+2026-07-10 18:15:46,952 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.5062
+2026-07-10 18:15:46,952 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 2.842s
+2026-07-10 18:15:46,953 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 5, 即将调用模型
+2026-07-10 18:15:54,640 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 那价格大概多少？...
+2026-07-10 18:15:54,640 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 5, 即将调用模型
+2026-07-10 18:15:59,264 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '小户型扫地机器人价格区间 功能对比'}}
+2026-07-10 18:16:03,111 - agent - INFO - knowledge_tools.py:71 - [KnowledgeSearchTool] 检索到 3 条参考来源
+2026-07-10 18:16:03,111 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.6323
+2026-07-10 18:16:03,111 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.6300
+2026-07-10 18:16:03,111 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\扫拖一体机器人100问.txt, 分数: 0.5413
+2026-07-10 18:16:03,111 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 3.847s
+2026-07-10 18:16:03,112 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 7, 即将调用模型
+2026-07-10 18:18:52,787 - agent - INFO - session_manager.py:62 - [SessionManager] 初始化: max_rounds=20, ttl=30min, cleanup_interval=60s
+2026-07-10 18:18:52,788 - agent - INFO - session_manager.py:152 - [SessionManager] 后台清理线程已启动 (间隔: 60s)
+2026-07-10 18:18:52,998 - agent - INFO - session_manager.py:76 - [SessionManager] 创建会话: 6f549e48
+2026-07-10 18:18:53,001 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 小户型适合哪些扫地机器人？...
+2026-07-10 18:18:53,001 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 1, 即将调用模型
+2026-07-10 18:18:53,745 - agent - ERROR - react_agent.py:54 - [ReactAgent] 执行失败: request_id: 57e6cfd7-775c-971a-932d-aeeaa0bd2380 
+ status_code: 400 
+ code: InvalidParameter 
+ message: <400> InternalError.Algo.InvalidParameter: Function call not supported.
+Traceback (most recent call last):
+  File "D:\AI大模型RAG与智能体开发_Agent项目\agent\react_agent.py", line 40, in execute_stream
+    for chunk in self.agent.stream(input_dict, stream_mode="values", context={"report": False}):
+                 ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langgraph\pregel\main.py", line 2982, in stream
+    for _ in runner.tick(
+             ~~~~~~~~~~~^
+        [t for t in loop.tasks.values() if not t.writes],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        schedule_task=loop.accept_push,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langgraph\pregel\_runner.py", line 207, in tick
+    run_with_retry(
+    ~~~~~~~~~~~~~~^
+        t,
+        ^^
+    ...<10 lines>...
+        },
+        ^^
+    )
+    ^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langgraph\pregel\_retry.py", line 617, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 684, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 426, in invoke
+    ret = self.func(*args, **kwargs)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain\agents\factory.py", line 1447, in model_node
+    model_response = _execute_model_sync(request)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain\agents\factory.py", line 1419, in _execute_model_sync
+    output = model_.invoke(messages)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 6004, in invoke
+    return self.bound.invoke(
+           ~~~~~~~~~~~~~~~~~^
+        input,
+        ^^^^^^
+        self._merge_configs(config),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        **{**self.kwargs, **kwargs},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 476, in invoke
+    self.generate_prompt(
+    ~~~~~~~~~~~~~~~~~~~~^
+        [self._convert_input(input)],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    ).generations[0][0],
+    ^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1849, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1656, in generate
+    self._generate_with_cache(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        m,
+        ^^
+    ...<2 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1994, in _generate_with_cache
+    result = self._generate(
+        messages, stop=stop, run_manager=run_manager, **kwargs
+    )
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_community\chat_models\tongyi.py", line 674, in _generate
+    resp = self.completion_with_retry(**params)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_community\chat_models\tongyi.py", line 545, in completion_with_retry
+    return _completion_with_retry(**kwargs)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\tenacity\__init__.py", line 331, in wrapped_f
+    return copy(f, *args, **kw)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\tenacity\__init__.py", line 470, in __call__
+    do = self.iter(retry_state=retry_state)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\tenacity\__init__.py", line 371, in iter
+    result = action(retry_state)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\tenacity\__init__.py", line 393, in <lambda>
+    self._add_action_func(lambda rs: rs.outcome.result())
+                                     ~~~~~~~~~~~~~~~~~^^
+  File "D:\Code\PYTHON\Lib\concurrent\futures\_base.py", line 453, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "D:\Code\PYTHON\Lib\concurrent\futures\_base.py", line 402, in __get_result
+    raise self._exception
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\tenacity\__init__.py", line 473, in __call__
+    result = fn(*args, **kwargs)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_community\chat_models\tongyi.py", line 543, in _completion_with_retry
+    return check_response(resp)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_community\llms\tongyi.py", line 61, in check_response
+    raise ValueError(
+    ...<3 lines>...
+    )
+ValueError: request_id: 57e6cfd7-775c-971a-932d-aeeaa0bd2380 
+ status_code: 400 
+ code: InvalidParameter 
+ message: <400> InternalError.Algo.InvalidParameter: Function call not supported.
+During task with name 'model' and id '0cc3595f-03ae-0d28-c09a-d623c5e3efac'
+2026-07-10 18:18:53,766 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 它的续航怎么样？...
+2026-07-10 18:18:53,766 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 1, 即将调用模型
+2026-07-10 18:18:54,186 - agent - ERROR - react_agent.py:54 - [ReactAgent] 执行失败: request_id: 883736e2-aa0b-9350-8403-33c88fd0782b 
+ status_code: 400 
+ code: InvalidParameter 
+ message: <400> InternalError.Algo.InvalidParameter: Function call not supported.
+Traceback (most recent call last):
+  File "D:\AI大模型RAG与智能体开发_Agent项目\agent\react_agent.py", line 40, in execute_stream
+    for chunk in self.agent.stream(input_dict, stream_mode="values", context={"report": False}):
+                 ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langgraph\pregel\main.py", line 2982, in stream
+    for _ in runner.tick(
+             ~~~~~~~~~~~^
+        [t for t in loop.tasks.values() if not t.writes],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        schedule_task=loop.accept_push,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langgraph\pregel\_runner.py", line 207, in tick
+    run_with_retry(
+    ~~~~~~~~~~~~~~^
+        t,
+        ^^
+    ...<10 lines>...
+        },
+        ^^
+    )
+    ^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langgraph\pregel\_retry.py", line 617, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 684, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 426, in invoke
+    ret = self.func(*args, **kwargs)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain\agents\factory.py", line 1447, in model_node
+    model_response = _execute_model_sync(request)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain\agents\factory.py", line 1419, in _execute_model_sync
+    output = model_.invoke(messages)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 6004, in invoke
+    return self.bound.invoke(
+           ~~~~~~~~~~~~~~~~~^
+        input,
+        ^^^^^^
+        self._merge_configs(config),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        **{**self.kwargs, **kwargs},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 476, in invoke
+    self.generate_prompt(
+    ~~~~~~~~~~~~~~~~~~~~^
+        [self._convert_input(input)],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    ).generations[0][0],
+    ^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1849, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1656, in generate
+    self._generate_with_cache(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        m,
+        ^^
+    ...<2 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1994, in _generate_with_cache
+    result = self._generate(
+        messages, stop=stop, run_manager=run_manager, **kwargs
+    )
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_community\chat_models\tongyi.py", line 674, in _generate
+    resp = self.completion_with_retry(**params)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_community\chat_models\tongyi.py", line 545, in completion_with_retry
+    return _completion_with_retry(**kwargs)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\tenacity\__init__.py", line 331, in wrapped_f
+    return copy(f, *args, **kw)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\tenacity\__init__.py", line 470, in __call__
+    do = self.iter(retry_state=retry_state)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\tenacity\__init__.py", line 371, in iter
+    result = action(retry_state)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\tenacity\__init__.py", line 393, in <lambda>
+    self._add_action_func(lambda rs: rs.outcome.result())
+                                     ~~~~~~~~~~~~~~~~~^^
+  File "D:\Code\PYTHON\Lib\concurrent\futures\_base.py", line 453, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "D:\Code\PYTHON\Lib\concurrent\futures\_base.py", line 402, in __get_result
+    raise self._exception
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\tenacity\__init__.py", line 473, in __call__
+    result = fn(*args, **kwargs)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_community\chat_models\tongyi.py", line 543, in _completion_with_retry
+    return check_response(resp)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_community\llms\tongyi.py", line 61, in check_response
+    raise ValueError(
+    ...<3 lines>...
+    )
+ValueError: request_id: 883736e2-aa0b-9350-8403-33c88fd0782b 
+ status_code: 400 
+ code: InvalidParameter 
+ message: <400> InternalError.Algo.InvalidParameter: Function call not supported.
+During task with name 'model' and id '349fe2c4-0d70-d121-f877-020a0c88db50'
+2026-07-10 18:18:54,193 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 那价格大概多少？...
+2026-07-10 18:18:54,193 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 1, 即将调用模型
+2026-07-10 18:18:54,912 - agent - ERROR - react_agent.py:54 - [ReactAgent] 执行失败: request_id: 4c15ab24-9fa1-9661-998f-822b5c3f7940 
+ status_code: 400 
+ code: InvalidParameter 
+ message: <400> InternalError.Algo.InvalidParameter: Function call not supported.
+Traceback (most recent call last):
+  File "D:\AI大模型RAG与智能体开发_Agent项目\agent\react_agent.py", line 40, in execute_stream
+    for chunk in self.agent.stream(input_dict, stream_mode="values", context={"report": False}):
+                 ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langgraph\pregel\main.py", line 2982, in stream
+    for _ in runner.tick(
+             ~~~~~~~~~~~^
+        [t for t in loop.tasks.values() if not t.writes],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        schedule_task=loop.accept_push,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langgraph\pregel\_runner.py", line 207, in tick
+    run_with_retry(
+    ~~~~~~~~~~~~~~^
+        t,
+        ^^
+    ...<10 lines>...
+        },
+        ^^
+    )
+    ^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langgraph\pregel\_retry.py", line 617, in run_with_retry
+    return task.proc.invoke(task.input, config)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 684, in invoke
+    input = context.run(step.invoke, input, config, **kwargs)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langgraph\_internal\_runnable.py", line 426, in invoke
+    ret = self.func(*args, **kwargs)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain\agents\factory.py", line 1447, in model_node
+    model_response = _execute_model_sync(request)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain\agents\factory.py", line 1419, in _execute_model_sync
+    output = model_.invoke(messages)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_core\runnables\base.py", line 6004, in invoke
+    return self.bound.invoke(
+           ~~~~~~~~~~~~~~~~~^
+        input,
+        ^^^^^^
+        self._merge_configs(config),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        **{**self.kwargs, **kwargs},
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 476, in invoke
+    self.generate_prompt(
+    ~~~~~~~~~~~~~~~~~~~~^
+        [self._convert_input(input)],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    ).generations[0][0],
+    ^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1849, in generate_prompt
+    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1656, in generate
+    self._generate_with_cache(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        m,
+        ^^
+    ...<2 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1994, in _generate_with_cache
+    result = self._generate(
+        messages, stop=stop, run_manager=run_manager, **kwargs
+    )
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_community\chat_models\tongyi.py", line 674, in _generate
+    resp = self.completion_with_retry(**params)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_community\chat_models\tongyi.py", line 545, in completion_with_retry
+    return _completion_with_retry(**kwargs)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\tenacity\__init__.py", line 331, in wrapped_f
+    return copy(f, *args, **kw)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\tenacity\__init__.py", line 470, in __call__
+    do = self.iter(retry_state=retry_state)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\tenacity\__init__.py", line 371, in iter
+    result = action(retry_state)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\tenacity\__init__.py", line 393, in <lambda>
+    self._add_action_func(lambda rs: rs.outcome.result())
+                                     ~~~~~~~~~~~~~~~~~^^
+  File "D:\Code\PYTHON\Lib\concurrent\futures\_base.py", line 453, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "D:\Code\PYTHON\Lib\concurrent\futures\_base.py", line 402, in __get_result
+    raise self._exception
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\tenacity\__init__.py", line 473, in __call__
+    result = fn(*args, **kwargs)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_community\chat_models\tongyi.py", line 543, in _completion_with_retry
+    return check_response(resp)
+  File "D:\AI大模型RAG与智能体开发_Agent项目\.venv\Lib\site-packages\langchain_community\llms\tongyi.py", line 61, in check_response
+    raise ValueError(
+    ...<3 lines>...
+    )
+ValueError: request_id: 4c15ab24-9fa1-9661-998f-822b5c3f7940 
+ status_code: 400 
+ code: InvalidParameter 
+ message: <400> InternalError.Algo.InvalidParameter: Function call not supported.
+During task with name 'model' and id '873841fd-d249-35b6-499b-f5c0eed4e2fb'
+2026-07-10 18:20:17,743 - agent - INFO - session_manager.py:62 - [SessionManager] 初始化: max_rounds=20, ttl=30min, cleanup_interval=60s
+2026-07-10 18:20:17,743 - agent - INFO - session_manager.py:152 - [SessionManager] 后台清理线程已启动 (间隔: 60s)
+2026-07-10 18:20:17,959 - agent - INFO - session_manager.py:76 - [SessionManager] 创建会话: 3441e555
+2026-07-10 18:20:17,962 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 小户型适合哪些扫地机器人？...
+2026-07-10 18:20:17,962 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 1, 即将调用模型
+2026-07-10 18:20:24,878 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '小户型 扫地机器人 选购建议'}}
+2026-07-10 18:20:29,300 - agent - INFO - knowledge_tools.py:71 - [KnowledgeSearchTool] 检索到 3 条参考来源
+2026-07-10 18:20:29,301 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.7075
+2026-07-10 18:20:29,301 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\扫拖一体机器人100问.txt, 分数: 0.5736
+2026-07-10 18:20:29,301 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.5601
+2026-07-10 18:20:29,301 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 4.423s
+2026-07-10 18:20:29,302 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 3, 即将调用模型
+2026-07-10 18:20:35,117 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 它的续航怎么样？...
+2026-07-10 18:20:35,117 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 3, 即将调用模型
+2026-07-10 18:20:38,928 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '小户型 扫地机器人 续航时间 电池容量'}, 'kwargs': {}}
+2026-07-10 18:20:41,595 - agent - INFO - knowledge_tools.py:71 - [KnowledgeSearchTool] 检索到 3 条参考来源
+2026-07-10 18:20:41,595 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.5836
+2026-07-10 18:20:41,595 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\扫拖一体机器人100问.txt, 分数: 0.5565
+2026-07-10 18:20:41,595 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\扫拖一体机器人100问.txt, 分数: 0.5353
+2026-07-10 18:20:41,595 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 2.667s
+2026-07-10 18:20:41,596 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 5, 即将调用模型
+2026-07-10 18:20:45,404 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '扫地机器人 续航时间 实际使用'}, 'kwargs': {}}
+2026-07-10 18:20:47,556 - agent - INFO - knowledge_tools.py:71 - [KnowledgeSearchTool] 检索到 3 条参考来源
+2026-07-10 18:20:47,556 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\扫拖一体机器人100问.txt, 分数: 0.5807
+2026-07-10 18:20:47,556 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.5419
+2026-07-10 18:20:47,556 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\扫拖一体机器人100问.txt, 分数: 0.5289
+2026-07-10 18:20:47,556 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 2.152s
+2026-07-10 18:20:47,557 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 7, 即将调用模型
+2026-07-10 18:20:51,600 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '主流扫地机器人 电池容量 续航时间 清洁面积'}, 'kwargs': {}}
+2026-07-10 18:20:54,433 - agent - INFO - knowledge_tools.py:71 - [KnowledgeSearchTool] 检索到 3 条参考来源
+2026-07-10 18:20:54,433 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.6369
+2026-07-10 18:20:54,433 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.6006
+2026-07-10 18:20:54,433 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.5732
+2026-07-10 18:20:54,433 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 2.833s
+2026-07-10 18:20:54,434 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 9, 即将调用模型
+2026-07-10 18:21:03,288 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 那价格大概多少？...
+2026-07-10 18:21:03,288 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 5, 即将调用模型
+2026-07-10 20:50:51,692 - agent - INFO - session_manager.py:62 - [SessionManager] 初始化: max_rounds=20, ttl=30min, cleanup_interval=60s
+2026-07-10 20:50:51,693 - agent - INFO - session_manager.py:152 - [SessionManager] 后台清理线程已启动 (间隔: 60s)
+2026-07-10 20:50:51,859 - agent - INFO - hybrid_search.py:37 - [HybridSearch] 混合检索已启用 (语义权重: 0.5, RRF_K: 60)
+2026-07-10 20:50:52,429 - agent - INFO - hybrid_search.py:49 - [HybridSearch] BM25 索引构建完成，共 293 个文档块
+2026-07-10 20:50:52,430 - agent - INFO - rag_service.py:44 - [RagSummarize] BM25 索引已加载，共 293 个文档块
+2026-07-10 20:50:52,652 - agent - INFO - session_manager.py:76 - [SessionManager] 创建会话: e7cbcbf8
+2026-07-10 20:50:52,655 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 小户型适合哪些扫地机器人？...
+2026-07-10 20:50:52,656 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 1, 即将调用模型
+2026-07-10 20:50:57,262 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '小户型 扫地机器人 推荐 选购'}}
+2026-07-10 20:51:00,593 - agent - INFO - knowledge_tools.py:71 - [KnowledgeSearchTool] 检索到 3 条参考来源
+2026-07-10 20:51:00,593 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.7156
+2026-07-10 20:51:00,594 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\扫拖一体机器人100问.txt, 分数: 0.5555
+2026-07-10 20:51:00,594 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.5449
+2026-07-10 20:51:00,594 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 3.332s
+2026-07-10 20:51:00,595 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 3, 即将调用模型
+2026-07-10 20:51:09,032 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 它的续航怎么样？...
+2026-07-10 20:51:09,032 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 3, 即将调用模型
+2026-07-10 20:51:14,523 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: query_history, 参数: {'input_dict': {}, 'kwargs': {}}
+2026-07-10 20:51:14,524 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: query_history, 耗时: 0.001s
+2026-07-10 20:51:14,525 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 5, 即将调用模型
+2026-07-10 20:51:20,947 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '扫地机器人 续航 时间 影响因素 小户型'}, 'kwargs': {}}
+2026-07-10 20:51:23,034 - agent - INFO - knowledge_tools.py:71 - [KnowledgeSearchTool] 检索到 3 条参考来源
+2026-07-10 20:51:23,034 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\扫拖一体机器人100问.txt, 分数: 0.5050
+2026-07-10 20:51:23,034 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.5040
+2026-07-10 20:51:23,034 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\扫拖一体机器人100问.txt, 分数: 0.4796
+2026-07-10 20:51:23,034 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 2.087s
+2026-07-10 20:51:23,035 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 7, 即将调用模型
+2026-07-10 20:51:34,780 - agent - INFO - middleware.py:30 - [中间件] Agent 开始处理, 查询: 那价格大概多少？...
+2026-07-10 20:51:34,780 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 5, 即将调用模型
+2026-07-10 20:51:41,196 - agent - INFO - middleware.py:54 - [中间件] 工具调用开始: knowledge_search, 参数: {'input_dict': {'query': '扫地机器人 价格 分布 小户型 2025'}}
+2026-07-10 20:51:43,561 - agent - INFO - knowledge_tools.py:71 - [KnowledgeSearchTool] 检索到 3 条参考来源
+2026-07-10 20:51:43,561 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.6066
+2026-07-10 20:51:43,561 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\选购指南.txt, 分数: 0.6051
+2026-07-10 20:51:43,561 - agent - INFO - knowledge_tools.py:76 - [KnowledgeSearchTool] 来源: D:\AI大模型RAG与智能体开发_Agent项目\data/knowledge_base\扫拖一体机器人100问.txt, 分数: 0.5199
+2026-07-10 20:51:43,561 - agent - INFO - middleware.py:60 - [中间件] 工具调用完成: knowledge_search, 耗时: 2.365s
+2026-07-10 20:51:43,562 - agent - INFO - middleware.py:72 - [中间件] 当前消息数: 7, 即将调用模型

@@ -1,0 +1,15 @@
+langchain-core
+langchain-text-splitters
+langchain
+langgraph
+create-agent
+pytesseract
+pillow
+python-docx
+langchain-community
+langchain-chroma
+rank_bm25
+jieba
+fastapi
+uvicorn
+pydantic

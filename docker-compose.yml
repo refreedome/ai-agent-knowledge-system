@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    container_name: agent-knowledge-api
+    ports:
+      - "8000:8000"
+    volumes:
+      # 向量数据库持久化（容器重启后知识库不丢失）
+      - ./chroma_db:/app/chroma_db
+      # MD5 去重记录持久化
+      - ./md5.text:/app/md5.text
+      # 日志持久化
+      - ./logs:/app/logs
+    environment:
+      # 阿里云通义千问 API 密钥（必须设置）
+      - DASHSCOPE_API_KEY=${DASHSCOPE_API_KEY}
+      # 编码设置
+      - PYTHONIOENCODING=utf-8
+      - LANG=C.UTF-8
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
