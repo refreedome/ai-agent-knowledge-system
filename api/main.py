@@ -23,7 +23,7 @@ from utils.logger_handler import logger
 
 from api.schemas import (
     ChatRequest, UploadRequest, UploadResponse,
-    SessionInfo, HealthResponse,
+    SessionInfo, HealthResponse, MetricsResponse,
 )
 
 
@@ -197,6 +197,28 @@ async def _async_stream(sync_generator):
         if chunk is _SENTINEL:
             break
         yield chunk
+
+
+# ────────────── 性能指标 ──────────────
+
+from infrastructure.metrics import metrics_collector
+
+
+@app.get("/api/metrics", response_model=MetricsResponse)
+async def get_metrics():
+    """
+    获取性能指标统计
+
+    返回 LLM 调用、工具调用等端点的：
+    - 请求总数、平均耗时、P50/P95 耗时
+    - Token 消耗总量、平均每次 Token
+    - 成功率
+    """
+    stats = metrics_collector.get_all_stats(window_seconds=3600)
+    return MetricsResponse(
+        stats=stats,
+        total_requests=sum(s.get("total_requests", 0) for s in stats.values()),
+    )
 
 # ────────────── 启动入口 ──────────────
 

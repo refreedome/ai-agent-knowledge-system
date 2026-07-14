@@ -36,19 +36,21 @@ class MonitorToolMiddleware(AgentMiddleware):
         logger.info(f"[中间件] Agent 开始处理, 查询: {str(query)[:50]}...")
 
         # 记录开始时间
-        state["_agent_start_time"] = time.time()
+        start_time = time.time()
 
         # 创建 Trace 会话
         trace_session = tracer.create_trace()
         trace_session.add_metadata("query", str(query)[:200])
-        state["_trace_session"] = trace_session
 
         # 添加 Agent 起始步骤
         step = trace_session.add_step("Agent 启动", "agent_start")
         step.set_input({"query": str(query)[:200]})
         step.finish()
 
-        return None
+        return {
+            "_agent_start_time": start_time,
+            "_trace_session": trace_session,
+        }
 
     def after_agent(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
         """Agent 整体处理完成时记录"""
@@ -150,18 +152,23 @@ class MonitorToolMiddleware(AgentMiddleware):
 class LogBeforeModelMiddleware(AgentMiddleware):
     """模型调用前后记录日志 + Trace"""
 
+    def __init__(self):
+        self._llm_start_time = None
+        self._llm_trace_step = None
+
     def before_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
         messages = state.get("messages", [])
         logger.info(f"[中间件] 当前消息数: {len(messages)}, 即将调用模型")
 
-        # 记录 LLM 调用到 Trace
+        self._llm_start_time = time.time()
+        self._llm_trace_step = None
+
         trace_session = state.get("_trace_session") if state else None
         if trace_session:
             step = trace_session.add_step("LLM 调用", "llm_call")
             step.set_input({"message_count": len(messages)})
-            state["_llm_trace_step"] = step
+            self._llm_trace_step = step
 
-        state["_llm_start_time"] = time.time()
         return None
 
     def after_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
@@ -170,20 +177,42 @@ class LogBeforeModelMiddleware(AgentMiddleware):
         last_msg = messages[-1] if messages else None
         logger.info("[中间件] 模型输出完成")
 
-        # 完成 LLM Trace 步骤
-        trace_step = state.get("_llm_trace_step") if state else None
-        if trace_step:
-            duration = time.time() - state.get("_llm_start_time", time.time())
-            content_preview = str(last_msg.content)[:200] if last_msg and hasattr(last_msg, 'content') else ""
-            trace_step.set_output({"response_preview": content_preview})
-            trace_step.add_metadata("duration_ms", round(duration * 1000, 2))
-            trace_step.finish()
+        duration = time.time() - (self._llm_start_time or time.time())
 
-        # 记录 LLM 调用指标
+        # 提取 Token 消耗信息（兼容不同 LangChain 版本和模型提供商）
+        tokens_used = 0
+        if last_msg:
+            if hasattr(last_msg, 'usage_metadata') and last_msg.usage_metadata:
+                meta = last_msg.usage_metadata
+                tokens_used = meta.get("total_tokens", 0)
+                logger.info(
+                    f"[中间件] Token 消耗: 输入={meta.get('input_tokens', 0)}, "
+                    f"输出={meta.get('output_tokens', 0)}, 总计={tokens_used}"
+                )
+            elif hasattr(last_msg, 'response_metadata') and last_msg.response_metadata:
+                usage = last_msg.response_metadata.get("token_usage", {})
+                if usage:
+                    tokens_used = usage.get("total_tokens", 0)
+                    logger.info(
+                        f"[中间件] Token 消耗(response_metadata): "
+                        f"输入={usage.get('input_tokens', 0)}, "
+                        f"输出={usage.get('output_tokens', 0)}, 总计={tokens_used}"
+                    )
+
+        # 完成 LLM Trace 步骤
+        if self._llm_trace_step:
+            content_preview = str(last_msg.content)[:200] if last_msg and hasattr(last_msg, 'content') else ""
+            self._llm_trace_step.set_output({"response_preview": content_preview})
+            self._llm_trace_step.add_metadata("duration_ms", round(duration * 1000, 2))
+            self._llm_trace_step.add_metadata("tokens_used", tokens_used)
+            self._llm_trace_step.finish()
+
+        # 记录 LLM 调用指标（含 Token 消耗）
         if last_msg and hasattr(last_msg, 'content'):
             metrics_collector.record_request(
                 endpoint="llm_call",
-                duration_ms=(time.time() - state.get("_llm_start_time", time.time())) * 1000,
+                duration_ms=duration * 1000,
+                tokens_used=tokens_used,
                 success=True,
             )
 

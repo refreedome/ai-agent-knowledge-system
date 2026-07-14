@@ -46,3 +46,9 @@ class HealthResponse(BaseModel):
     status: str = "ok"
     version: str = "1.0.0"
     session_count: int = 0
+
+
+class MetricsResponse(BaseModel):
+    """性能指标响应"""
+    stats: dict
+    total_requests: int = 0

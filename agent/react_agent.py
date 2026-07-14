@@ -66,15 +66,24 @@ if __name__ == '__main__':
     agent = ReactAgent()
     session_id = session_manager.create_session()
     print(f"会话ID: {session_id}\n")
+    print("=" * 50)
+    print("智能客服已启动，输入问题开始对话（输入 'exit' 退出）")
+    print("=" * 50)
 
-    questions = [
-        "小户型适合哪些扫地机器人？",
-        "它的续航怎么样？",
-        "那价格大概多少？",
-    ]
+    while True:
+        try:
+            q = input("\n用户: ").strip()
+            if not q:
+                continue
+            if q.lower() in ("exit", "quit", "q"):
+                print("再见！")
+                break
 
-    for q in questions:
-        print(f"\n用户: {q}")
-        print("助手: ", end="", flush=True)
-        for chunk in agent.execute_stream(q, session_id=session_id):
-            print(chunk, end="", flush=True)
+            print("助手: ", end="", flush=True)
+            for chunk in agent.execute_stream(q, session_id=session_id):
+                print(chunk, end="", flush=True)
+            print()
+
+        except (KeyboardInterrupt, EOFError):
+            print("\n再见！")
+            break
