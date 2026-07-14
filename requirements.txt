@@ -13,3 +13,4 @@ jieba
 fastapi
 uvicorn
 pydantic
+dashscope
