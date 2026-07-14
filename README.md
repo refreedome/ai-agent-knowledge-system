@@ -71,8 +71,8 @@ graph TB
 ### 2. 安装
 
 ```bash
-git clone https://github.com/你的用户名/项目名.git
-cd 项目名
+git clone https://github.com/refreedome/ai-agent-knowledge-system.git
+cd ai-agent-knowledge-system
 
 python -m venv .venv
 # Windows
