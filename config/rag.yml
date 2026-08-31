@@ -1,2 +1,2 @@
-chat_model_name: qwen-plus-2025-07-28
-embedding_model_name: text-embedding-v4
+chat_model_name: deepseek-v4-flash
+embedding_model_name: BAAI/bge-small-zh-v1.5

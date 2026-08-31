@@ -115,6 +115,68 @@ docker compose up --build -d
 
 ---
 
+## 🚀 部署上线（生产）
+
+### 1. 准备密钥与配置
+
+```bash
+cp .env.example .env    # Windows: copy .env.example .env
+# 编辑 .env，填入 DASHSCOPE_API_KEY；生产环境按需设置 ALLOWED_ORIGINS（逗号分隔的真实域名/IP）
+```
+
+> ⚠️ `.env` 已在 `.gitignore` 中，密钥绝不提交到 Git。
+
+### 2. 本机一键启动
+
+```bash
+docker compose up -d --build
+docker compose ps          # 状态应为 healthy
+curl http://localhost:8000/api/health
+```
+
+### 3. 部署到云服务器（Ubuntu 22.04）
+
+```bash
+# ① 安装 Docker
+curl -fsSL https://get.docker.com | sh
+
+# ② 拉取代码
+git clone https://github.com/refreedome/ai-agent-knowledge-system.git
+cd ai-agent-knowledge-system
+
+# ③ 配置密钥（服务器上执行）
+cp .env.example .env && vim .env
+
+# ④ 构建并启动
+docker compose up -d --build
+
+# ⑤ 验证
+curl http://localhost:8000/api/health
+```
+
+- 云厂商安全组/防火墙放行 **8000** 端口
+- 浏览器打开 `http://你的公网IP:8000/docs` 即上线成功
+
+### 4. 进阶：域名 + HTTPS
+
+```bash
+# Nginx 反向代理 + Let's Encrypt 免费证书
+sudo apt install nginx certbot python3-certbot-nginx
+# 配置 server_name api.你的域名.com 反代到 127.0.0.1:8000
+sudo certbot --nginx -d api.你的域名.com
+```
+
+### 5. 生产配置说明（面试可讲）
+
+| 配置 | 作用 |
+|------|------|
+| `restart: unless-stopped` | 服务器重启后容器自动拉起 |
+| `volumes` 挂载 | chroma_db / md5.text / logs 持久化，容器重建数据不丢 |
+| `healthcheck` | 定期 curl `/api/health`，异常可被编排系统感知 |
+| `ALLOWED_ORIGINS` | CORS 白名单，生产收紧为真实域名，防跨域滥用 |
+
+---
+
 ## 📡 API 文档
 
 | 方法 | 路径 | 说明 | 请求体 |
@@ -124,6 +186,8 @@ docker compose up --build -d
 | `POST` | `/api/upload` | 上传文档 | `{"file_path": "绝对路径"}` |
 | `GET` | `/api/sessions` | 会话列表 | - |
 | `DELETE` | `/api/sessions/{id}` | 清理会话 | - |
+| `GET` | `/api/cache` | 热点问题缓存统计（命中率/大小） | - |
+| `GET` | `/api/metrics` | 延迟 / Token / 成功率指标 | - |
 
 ### 测试示例
 

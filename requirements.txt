@@ -6,11 +6,13 @@ create-agent
 pytesseract
 pillow
 python-docx
+pypdf
 langchain-community
 langchain-chroma
+langchain-openai
+fastembed
 rank_bm25
 jieba
 fastapi
 uvicorn
 pydantic
-dashscope
