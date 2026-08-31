@@ -11,8 +11,9 @@ from model.factory import chat_model
 from utils.prompt_loader import load_system_prompts
 from agent.tools.middleware import create_default_middleware
 from database.session_manager import session_manager
+from utils.qa_cache import qa_cache
 from utils.logger_handler import logger
-from langchain_core.messages import AIMessage
+from langchain_core.messages import AIMessage, AIMessageChunk
 
 
 class ReactAgent:
@@ -42,20 +43,29 @@ class ReactAgent:
             ]
         }
 
+        # ── 热点问题缓存：命中直接回放，跳过 LLM 调用 ──
+        cached_answer = qa_cache.get(query)
+        if cached_answer is not None:
+            session_manager.add_pair(session_id, query, cached_answer)
+            yield from qa_cache.iter_chunks(cached_answer)
+            return
+
         full_response = ""
         try:
-            for chunk in self.agent.stream(input_dict, stream_mode="values", context={"report": False}):
-                latest_message = chunk["messages"][-1]
-
-                if not isinstance(latest_message, AIMessage):
-                    continue
-
-                if latest_message.content:
-                    content = latest_message.content.strip() + "\n"
+            # stream_mode="messages"：LangGraph 逐 token 流式输出 LLM 结果
+            # 每个 chunk 为 (message_chunk, metadata) 元组
+            for chunk, _ in self.agent.stream(input_dict, stream_mode="messages", context={"report": False}):
+                # 只取 AI 回复的文本增量（工具调用 / ToolMessage 的 chunk 自动跳过）
+                if isinstance(chunk, AIMessageChunk) and chunk.content:
+                    content = chunk.content
                     full_response += content
                     yield content
 
             session_manager.add_pair(session_id, query, full_response.strip())
+
+            # ── 热点问题缓存：写入（相同问题下次直接命中）──
+            qa_cache.put(query, full_response.strip())
+            logger.info(f"[QACache] 已缓存问题: {query[:30]}... (size={qa_cache.stats()['size']})")
 
         except Exception as e:
             logger.error(f"[ReactAgent] 执行失败: {str(e)}", exc_info=True)
