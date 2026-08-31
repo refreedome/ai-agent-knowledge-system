@@ -7,8 +7,8 @@
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-> 基于 LangChain + LangGraph + 通义千问 构建的智能知识库问答系统。
-> 支持多轮对话、混合检索、FastAPI 服务化与 Docker 容器化部署。
+> 基于 LangChain + LangGraph + DeepSeek 构建的智能知识库问答系统。
+> 支持多轮对话、混合检索、本地向量化（数据不出境）、FastAPI 服务化与 Docker 容器化部署。
 
 ---
 
@@ -53,6 +53,8 @@ graph TB
 ## ✨ 核心功能
 
 - **RAG 混合检索** — BM25 关键词 + 语义向量 + RRF 融合排序，兼顾术语精确匹配与语义理解
+- **本地向量化** — FastEmbed（BGE ONNX）本地推理，敏感数据不出境，无需额外 Embedding API
+- **热点问题缓存** — 命中直接回放，跳过 LLM 调用，降低延迟与成本
 - **多轮对话** — Session 会话管理，SQLite 持久化，服务重启后对话不丢失
 - **Agent 智能编排** — LangGraph ReAct 循环（思考→工具调用→观察→回答）
 - **文档自动导入** — 支持 txt / pdf / docx / csv / 图片，自动分块向量化
@@ -66,7 +68,7 @@ graph TB
 ### 1. 环境准备
 
 - Python 3.12+
-- 阿里云通义千问 API 密钥（[获取地址](https://help.aliyun.com/zh/model-studio/developer-reference/get-api-key)）
+- DeepSeek API 密钥（[获取地址](https://platform.deepseek.com/api_keys)）
 
 ### 2. 安装
 
@@ -86,11 +88,16 @@ pip install -r requirements.txt
 ### 3. 配置密钥
 
 ```bash
+# 推荐：使用 .env（密钥不提交 Git）
+cp .env.example .env    # Windows: copy .env.example .env
+# 编辑 .env，填入 DEEPSEEK_API_KEY
+
+# 或临时环境变量：
 # Windows PowerShell
-$env:DASHSCOPE_API_KEY="sk-你的密钥"
+$env:DEEPSEEK_API_KEY="sk-你的密钥"
 
 # macOS / Linux
-export DASHSCOPE_API_KEY="sk-你的密钥"
+export DEEPSEEK_API_KEY="sk-你的密钥"
 ```
 
 ### 4. 加载知识库
@@ -121,7 +128,7 @@ docker compose up --build -d
 
 ```bash
 cp .env.example .env    # Windows: copy .env.example .env
-# 编辑 .env，填入 DASHSCOPE_API_KEY；生产环境按需设置 ALLOWED_ORIGINS（逗号分隔的真实域名/IP）
+# 编辑 .env，填入 DEEPSEEK_API_KEY；生产环境按需设置 ALLOWED_ORIGINS（逗号分隔的真实域名/IP）
 ```
 
 > ⚠️ `.env` 已在 `.gitignore` 中，密钥绝不提交到 Git。
@@ -216,7 +223,7 @@ curl -N -X POST http://localhost:8000/api/chat \
 ├── database/            # 持久化层
 │   └── session_manager.py  # 会话管理（SQLite）
 ├── model/               # 模型层
-│   └── factory.py       #   通义千问封装
+│   └── factory.py       #   模型工厂（DeepSeek 聊天 / 本地 BGE Embedding）
 ├── config/              # 配置层（YAML）
 ├── utils/               # 工具层
 ├── document/            # 文档处理器
@@ -232,7 +239,8 @@ curl -N -X POST http://localhost:8000/api/chat \
 | 分类 | 技术 | 用途 |
 |------|------|------|
 | AI 框架 | LangChain + LangGraph | Agent 编排、ReAct 循环 |
-| 大语言模型 | 通义千问 qwen-plus | 对话生成、工具调用 |
+| 大语言模型 | DeepSeek（deepseek-v4-flash，OpenAI 兼容） | 对话生成、工具调用 |
+| Embedding | FastEmbed + BGE-small-zh（本地 ONNX） | 文本向量化，数据不出境 |
 | 向量数据库 | ChromaDB | 知识库向量存储 |
 | 混合检索 | BM25Okapi + jieba + RRF | 关键词+语义融合检索 |
 | Web 框架 | FastAPI + Uvicorn | HTTP 服务、SSE 流式 |
