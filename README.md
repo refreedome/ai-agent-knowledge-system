@@ -7,8 +7,8 @@
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-> 基于 LangChain + LangGraph + 通义千问 构建的智能知识库问答系统。
-> 支持多轮对话、混合检索、FastAPI 服务化与 Docker 容器化部署。
+> 基于 LangChain + LangGraph + DeepSeek 构建的智能知识库问答系统。
+> 支持多轮对话、混合检索、本地向量化（数据不出境）、FastAPI 服务化与 Docker 容器化部署。
 
 ---
 
@@ -53,10 +53,15 @@ graph TB
 ## ✨ 核心功能
 
 - **RAG 混合检索** — BM25 关键词 + 语义向量 + RRF 融合排序，兼顾术语精确匹配与语义理解
-- **多轮对话** — Session 会话管理，SQLite 持久化，服务重启后对话不丢失
+- **模型层可切换** — 对话模型与嵌入模型都走 `config/rag.yml` 配置：通义千问 / DeepSeek（OpenAI 兼容）二选一；嵌入可用 DashScope，也可换成本地 ONNX（BGE）推理，做到免 Embedding API key、数据不出境
+- **热点问题缓存** — 命中直接回放，跳过 LLM 调用，降低延迟与成本（缓存键含用户维度，避免个性化答案串用户）
+- **多轮对话与上下文压缩** — 滑动窗口 + 字符裁剪 + **Compaction 增量摘要**，SQLite 持久化，服务重启后对话不丢失
+- **多用户与权限** — 会话/长期记忆按用户隔离，配置化角色权限，越权访问返回 403
 - **Agent 智能编排** — LangGraph ReAct 循环（思考→工具调用→观察→回答）
 - **文档自动导入** — 支持 txt / pdf / docx / csv / 图片，自动分块向量化
-- **API 服务化** — FastAPI + SSE 流式输出，Swagger 自动文档
+- **API 服务化** — FastAPI + SSE 真流式输出（逐 token，思考过程与答案分离），Swagger 自动文档
+- **React 前端** — 逐字流式渲染、思考过程折叠、会话列表与用户切换
+- **可观测与评测** — Trace + Metrics（P50/P95、真实 Token）；50 题固定测试集 Hit Rate@5 自动评测报告
 - **Docker 部署** — 多阶段构建，docker-compose 一键启动
 
 ---
@@ -66,7 +71,9 @@ graph TB
 ### 1. 环境准备
 
 - Python 3.12+
-- 阿里云通义千问 API 密钥（[获取地址](https://help.aliyun.com/zh/model-studio/developer-reference/get-api-key)）
+- 大模型 API 密钥（**二选一**，在 `config/rag.yml` 里选 provider）：
+  - 通义千问：`DASHSCOPE_API_KEY`（[获取地址](https://bailian.console.aliyun.com/)）——**当前默认**
+  - DeepSeek：`DEEPSEEK_API_KEY`（[获取地址](https://platform.deepseek.com/api_keys)）
 
 ### 2. 安装
 
@@ -86,11 +93,18 @@ pip install -r requirements.txt
 ### 3. 配置密钥
 
 ```bash
+# 推荐：使用 .env（密钥不提交 Git）
+cp .env.example .env    # Windows: copy .env.example .env
+# 编辑 .env，填入所选 provider 的密钥（默认用通义千问）：
+#   DASHSCOPE_API_KEY=sk-你的密钥        （chat_provider/embedding_provider = dashscope）
+#   DEEPSEEK_API_KEY=sk-你的密钥         （chat_provider = deepseek 时才需要）
+
+# 或临时环境变量：
 # Windows PowerShell
 $env:DASHSCOPE_API_KEY="sk-你的密钥"
 
 # macOS / Linux
-export DASHSCOPE_API_KEY="sk-你的密钥"
+export DEEPSEEK_API_KEY="sk-你的密钥"
 ```
 
 ### 4. 加载知识库
@@ -128,6 +142,68 @@ npm run dev
 
 ---
 
+## 🚀 部署上线（生产）
+
+### 1. 准备密钥与配置
+
+```bash
+cp .env.example .env    # Windows: copy .env.example .env
+# 编辑 .env，填入所选 provider 的密钥（默认通义千问 DASHSCOPE_API_KEY）；生产环境按需设置 ALLOWED_ORIGINS（逗号分隔的真实域名/IP）
+```
+
+> ⚠️ `.env` 已在 `.gitignore` 中，密钥绝不提交到 Git。
+
+### 2. 本机一键启动
+
+```bash
+docker compose up -d --build
+docker compose ps          # 状态应为 healthy
+curl http://localhost:8000/api/health
+```
+
+### 3. 部署到云服务器（Ubuntu 22.04）
+
+```bash
+# ① 安装 Docker
+curl -fsSL https://get.docker.com | sh
+
+# ② 拉取代码
+git clone https://github.com/refreedome/ai-agent-knowledge-system.git
+cd ai-agent-knowledge-system
+
+# ③ 配置密钥（服务器上执行）
+cp .env.example .env && vim .env
+
+# ④ 构建并启动
+docker compose up -d --build
+
+# ⑤ 验证
+curl http://localhost:8000/api/health
+```
+
+- 云厂商安全组/防火墙放行 **8000** 端口
+- 浏览器打开 `http://你的公网IP:8000/docs` 即上线成功
+
+### 4. 进阶：域名 + HTTPS
+
+```bash
+# Nginx 反向代理 + Let's Encrypt 免费证书
+sudo apt install nginx certbot python3-certbot-nginx
+# 配置 server_name api.你的域名.com 反代到 127.0.0.1:8000
+sudo certbot --nginx -d api.你的域名.com
+```
+
+### 5. 生产配置说明（面试可讲）
+
+| 配置 | 作用 |
+|------|------|
+| `restart: unless-stopped` | 服务器重启后容器自动拉起 |
+| `volumes` 挂载 | chroma_db / md5.text / logs 持久化，容器重建数据不丢 |
+| `healthcheck` | 定期 curl `/api/health`，异常可被编排系统感知 |
+| `ALLOWED_ORIGINS` | CORS 白名单，生产收紧为真实域名，防跨域滥用 |
+
+---
+
 ## 📡 API 文档
 
 | 方法 | 路径 | 说明 | 请求体 |
@@ -140,6 +216,7 @@ npm run dev
 | `GET` | `/api/sessions` | 会话列表（按用户隔离，admin 可查全部） | - |
 | `GET` | `/api/sessions/{id}/messages` | 会话历史消息 | - |
 | `DELETE` | `/api/sessions/{id}` | 清理会话 | - |
+| `GET` | `/api/cache` | 热点问题缓存统计（命中率/大小） | - |
 | `GET` | `/api/metrics` | 性能指标（P50/P95、Token、成功率） | - |
 
 > 身份通过请求头 `X-User-Id` 传入（见 `config/users.yml` 的用户与角色配置）；
@@ -177,7 +254,7 @@ curl -N -X POST http://localhost:8000/api/chat \
 ├── database/            # 持久化层
 │   └── session_manager.py  # 会话管理（SQLite）
 ├── model/               # 模型层
-│   └── factory.py       #   通义千问封装
+│   └── factory.py       #   模型工厂（对话/嵌入均可按配置切换供应商）
 ├── config/              # 配置层（YAML）
 ├── utils/               # 工具层
 ├── document/            # 文档处理器
@@ -193,7 +270,8 @@ curl -N -X POST http://localhost:8000/api/chat \
 | 分类 | 技术 | 用途 |
 |------|------|------|
 | AI 框架 | LangChain + LangGraph | Agent 编排、ReAct 循环 |
-| 大语言模型 | 通义千问 qwen-plus | 对话生成、工具调用 |
+| 大语言模型 | 通义千问 qwen-plus（默认）/ DeepSeek（OpenAI 兼容，可切换） | 对话生成、工具调用 |
+| Embedding | DashScope text-embedding-v4（默认）/ FastEmbed + BGE-small-zh（本地 ONNX，免 key） | 文本向量化 |
 | 向量数据库 | ChromaDB | 知识库向量存储 |
 | 混合检索 | BM25Okapi + jieba + RRF | 关键词+语义融合检索 |
 | Web 框架 | FastAPI + Uvicorn | HTTP 服务、SSE 流式 |

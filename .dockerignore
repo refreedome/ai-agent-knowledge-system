@@ -1,0 +1,37 @@
+# Git
+.git/
+.gitignore
+.reasonix/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# 密钥（绝不进镜像！）
+.env
+.env.*
+
+# 运行时数据（挂载卷，不进镜像）
+chroma_db/
+data/
+logs/
+md5.text
+agent/data/
+
+# 前端依赖与构建产物
+frontend/node_modules/
+frontend/dist/
+.npm-cache/
+
+# 文档与杂项
+*.md
+!README.md
+docs/
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store

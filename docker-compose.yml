@@ -12,9 +12,13 @@ services:
       - ./md5.text:/app/md5.text
       # 日志持久化
       - ./logs:/app/logs
+      # 知识库文档（宿主目录 → 容器，新增文档无需重建镜像）
+      - ./data:/app/data
     environment:
-      # 阿里云通义千问 API 密钥（必须设置）
-      - DASHSCOPE_API_KEY=${DASHSCOPE_API_KEY}
+      # DeepSeek API 密钥（必须设置，见 .env.example）
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      # CORS 允许来源（生产收紧为真实域名/IP，见 .env.example）
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:8501,http://127.0.0.1:8501,http://localhost:8000,http://127.0.0.1:8000}
       # 编码设置
       - PYTHONIOENCODING=utf-8
       - LANG=C.UTF-8

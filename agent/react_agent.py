@@ -12,6 +12,7 @@ from utils.prompt_loader import load_system_prompts
 from agent.tools.middleware import create_default_middleware
 from database.session_manager import session_manager
 from database.long_term_memory import long_term_memory
+from utils.qa_cache import qa_cache
 from utils.logger_handler import logger
 from langchain_core.messages import AIMessage, AIMessageChunk, ToolMessage
 
@@ -50,6 +51,19 @@ class ReactAgent:
         messages.append({"role": "user", "content": query})
 
         input_dict = {"messages": messages}
+
+        # ── 热点问题缓存：命中直接回放，跳过 LLM 调用 ──
+        # 缓存键带上 user_id：回答里包含【用户长期记忆】个性化内容与角色相关工具结果，
+        # 若只按问题文本缓存，会把 A 用户的个性化答案串给 B 用户。
+        cache_key = f"{user_id}::{query}"
+        cached_answer = qa_cache.get(cache_key)
+        if cached_answer is not None:
+            session_manager.add_pair(session_id, query, cached_answer)
+            logger.info(f"[QACache] 命中缓存: {query[:30]}... (size={qa_cache.stats()['size']})")
+            # 命中缓存同样要走事件协议，前端才拿得到 token 事件（分片回放保留打字机观感）
+            for piece in qa_cache.iter_chunks(cached_answer):
+                yield {"type": "token", "content": piece, "turn": 0}
+            return
 
         full_response = ""
         final_answer = ""
@@ -100,6 +114,11 @@ class ReactAgent:
             # 长期记忆：从用户输入中抽取偏好事实并持久化（按用户隔离）
             for fact in long_term_memory.extract_facts(query):
                 long_term_memory.remember(user_id, fact)
+
+            # ── 热点问题缓存：写入（同一用户 + 同一问题在 TTL 内直接命中）──
+            if full_response.strip():
+                qa_cache.put(cache_key, full_response.strip())
+                logger.info(f"[QACache] 已缓存: {query[:30]}... (size={qa_cache.stats()['size']})")
 
         except Exception as e:
             logger.error(f"[ReactAgent] 执行失败: {str(e)}", exc_info=True)
