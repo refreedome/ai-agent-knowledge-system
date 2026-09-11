@@ -15,6 +15,12 @@ chroma_db/
 data/sessions.db
 md5.text
 
+# 上传与运行时数据
+# 说明：用户上传的文件、长期记忆快照属于运行时产物，不入库；
+#      评测用的固定测试集 data/eval/test_set.json 是证据，必须入库
+data/uploads/
+data/memory.json
+
 # 日志
 logs/
 

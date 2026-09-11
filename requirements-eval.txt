@@ -1,0 +1,5 @@
+# 评测与开发依赖（生产运行不需要）
+# 安装: pip install -r requirements-eval.txt
+ragas>=0.1.20
+datasets>=2.19.0
+pytest>=8.0.0

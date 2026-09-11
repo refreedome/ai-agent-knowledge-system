@@ -113,6 +113,19 @@ python -m api.main
 docker compose up --build -d
 ```
 
+### 6. 前端界面（React + Vite）
+
+```bash
+cd frontend
+npm install
+npm run dev
+# 浏览器打开 http://localhost:5173
+```
+
+> 开发模式下 Vite 已把 `/api` 代理到 `http://127.0.0.1:8000`（见 `frontend/vite.config.ts`），
+> 需先启动 FastAPI 后端（方式二）。前端支持流式对话、会话管理、文档上传。
+> 另外 `app.py` 提供了一个 Streamlit 原型界面：`streamlit run app.py`。
+
 ---
 
 ## 📡 API 文档
@@ -120,10 +133,22 @@ docker compose up --build -d
 | 方法 | 路径 | 说明 | 请求体 |
 |------|------|------|--------|
 | `GET` | `/api/health` | 健康检查 | - |
-| `POST` | `/api/chat` | 流式对话（SSE） | `{"query": "...", "session_id": "可选"}` |
-| `POST` | `/api/upload` | 上传文档 | `{"file_path": "绝对路径"}` |
-| `GET` | `/api/sessions` | 会话列表 | - |
+| `GET` | `/api/users` | 用户列表（含角色与权限，供切换用户） | - |
+| `POST` | `/api/chat` | 流式对话（SSE） | `{"query": "...", "session_id": "可选", "user_id": "可选"}` |
+| `POST` | `/api/upload` | 上传文档（服务端路径，需 admin） | `{"file_path": "绝对路径"}` |
+| `POST` | `/api/upload/file` | 上传文档（multipart 表单，需 admin） | `file` 字段（txt/pdf/docx/csv/图片） |
+| `GET` | `/api/sessions` | 会话列表（按用户隔离，admin 可查全部） | - |
+| `GET` | `/api/sessions/{id}/messages` | 会话历史消息 | - |
 | `DELETE` | `/api/sessions/{id}` | 清理会话 | - |
+| `GET` | `/api/metrics` | 性能指标（P50/P95、Token、成功率） | - |
+
+> 身份通过请求头 `X-User-Id` 传入（见 `config/users.yml` 的用户与角色配置）；
+> 普通用户越权查询他人会话或上传文档会返回 403。
+
+### 测试与评测
+
+单元测试、检索评测（Hit Rate@5）、生成质量评测（RAGAS）与权限回归的说明见 **[TESTING.md](TESTING.md)**；
+最新评测报告见 `evaluation/评测报告-HitRate@5.md`。
 
 ### 测试示例
 

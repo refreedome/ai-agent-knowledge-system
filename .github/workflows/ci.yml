@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      # 单元测试全部 Mock 外部依赖，仅需占位 Key；严禁在 CI 中使用真实密钥
+      DASHSCOPE_API_KEY: sk-ci-dummy
+      PYTHONIOENCODING: utf-8
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Run unit tests（合并门禁，失败即阻断）
+        run: pytest tests/ -q
+
+      - name: Offline retrieval evaluation（信息性检查，不阻断）
+        continue-on-error: true
+        run: python evaluation/evaluate_retrieval.py --source local
