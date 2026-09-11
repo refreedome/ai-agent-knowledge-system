@@ -1,0 +1,9 @@
+# 前端构建上下文里不需要进镜像的东西
+node_modules/
+dist/
+.vite/
+*.log
+.DS_Store
+Thumbs.db
+.env
+.env.*

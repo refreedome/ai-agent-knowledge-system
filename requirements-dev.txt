@@ -1,3 +1,7 @@
 # 开发/CI 依赖（生产运行不需要）
 # 安装: pip install -r requirements-dev.txt
 pytest>=8.0.0
+
+# 备选界面 app.py（Streamlit 版）。生产入口是 FastAPI + React 前端，
+# 所以 Streamlit 不放进生产 requirements.txt。
+streamlit>=1.30.0

@@ -1,18 +1,40 @@
+# ── Agent 编排 ──
 langchain-core
 langchain-text-splitters
 langchain
 langgraph
-create-agent
-pytesseract
-pillow
-python-docx
-pypdf
+
+# ── 模型供应商（按 config/rag.yml 的 provider 选装，两个都留着以便随时切换）──
+# dashscope        → 通义千问 ChatTongyi / DashScopeEmbeddings 的 SDK（缺它会在启动时 ImportError）
+# langchain-openai → DeepSeek 走 OpenAI 兼容协议的客户端
+dashscope
+langchain-openai
+
+# ── 本地嵌入（embedding_provider=fastembed 时需要，免 API key）──
+fastembed
+
+# ── 知识库与检索 ──
 langchain-community
 langchain-chroma
-langchain-openai
-fastembed
 rank_bm25
 jieba
+
+# ── 文档解析（含图片 OCR）──
+pypdf
+python-docx
+pytesseract
+pillow
+
+# ── 服务 ──
 fastapi
 uvicorn
 pydantic
+# FastAPI 处理 multipart 表单/文件上传（/api/upload/file）必需。
+# 注意：它不会被代码直接 import，所以靠 import 扫描查不出来——缺了会在启动时报
+# RuntimeError: Form data requires "python-multipart" to be installed
+python-multipart
+
+# ── 配置 ──
+# utils/config_handler.py 用 yaml 读 config/*.yml。
+# 它此前只是被 langchain-core 间接带进来，属于"运气好"，这里显式声明。
+PyYAML

@@ -1,3 +1,9 @@
+# ─────────────────────────────────────────────────────────────
+# 一键启动完整应用（后端 API + 前端 nginx）
+#   浏览器 → http://localhost:8090          （前端，nginx 托管 + /api 反代）
+#            http://localhost:8000/docs     （后端 Swagger，可直接调试接口）
+# 密钥放 .env（已被 .gitignore 忽略），模板见 .env.example
+# ─────────────────────────────────────────────────────────────
 
 services:
   api:
@@ -15,16 +21,35 @@ services:
       # 知识库文档（宿主目录 → 容器，新增文档无需重建镜像）
       - ./data:/app/data
     environment:
-      # DeepSeek API 密钥（必须设置，见 .env.example）
-      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
-      # CORS 允许来源（生产收紧为真实域名/IP，见 .env.example）
-      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:8501,http://127.0.0.1:8501,http://localhost:8000,http://127.0.0.1:8000}
+      # 模型密钥：默认走通义千问（config/rag.yml 的 chat_provider=dashscope）
+      - DASHSCOPE_API_KEY=${DASHSCOPE_API_KEY}
+      # 若把 chat_provider 改成 deepseek，则需要这一项
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      # CORS 白名单：生产收紧为真实域名/IP（前端容器默认映射到 8090）
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:8090,http://127.0.0.1:8090,http://localhost:5173,http://127.0.0.1:5173}
       # 编码设置
       - PYTHONIOENCODING=utf-8
       - LANG=C.UTF-8
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      # ⚠️ 运行镜像里没有 curl，所以不能用 curl 探活（之前这里一直是 unhealthy）。
+      #    改用 Python 标准库发请求，不额外装二进制。
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=5).status == 200 else 1)"]
       interval: 30s
       timeout: 10s
       retries: 3
+      # 启动时要加载向量库、构建 BM25 索引（328 个块），给足预热时间
+      start_period: 60s
+
+  web:
+    # 前端：多阶段构建（node 构建 dist → nginx 托管 + /api 反代到 api:8000）
+    build: ./frontend
+    container_name: agent-knowledge-web
+    ports:
+      # 宿主 8090 → 容器 80（避开本机其它项目占用的 3000/8080）
+      - "8090:80"
+    depends_on:
+      api:
+        # 后端健康检查通过后再启动前端
+        condition: service_healthy
+    restart: unless-stopped
