@@ -21,13 +21,18 @@ from contextlib import contextmanager
 
 from utils.logger_handler import logger
 from utils.config_handler import agent_conf
+from .compaction import compaction_service
 
 
 class SessionData:
     """单个会话的数据与元信息"""
 
-    def __init__(self, messages: list = None, created_at: str = None, last_active: str = None):
+    def __init__(self, messages: list = None, created_at: str = None, last_active: str = None,
+                 user_id: str = "default", summary: str = "", compacted_count: int = 0):
         self.messages: list = messages or []
+        self.user_id: str = user_id
+        self.summary: str = summary or ""              # 被挤出窗口的历史压缩摘要（Compaction）
+        self.compacted_count: int = compacted_count     # 已进入摘要的消息条数（增量压缩游标）
         self.created_at: datetime = self._parse_time(created_at) if created_at else datetime.now()
         self.last_active: datetime = self._parse_time(last_active) if last_active else datetime.now()
 
@@ -65,6 +70,8 @@ class SessionManager:
         # 配置
         session_conf = agent_conf.get("session", {})
         self._max_rounds: int = session_conf.get("max_rounds", 20)
+        # 存储上限（比窗口大得多）：压缩需要「被挤出的原文」做素材，硬丢太早会没得压
+        self._max_stored_rounds: int = session_conf.get("max_stored_rounds", 100)
         self._ttl_minutes: int = session_conf.get("ttl_minutes", 30)
         cleanup_interval: int = session_conf.get("cleanup_interval", 60)
 
@@ -100,9 +107,24 @@ class SessionManager:
                     session_id TEXT PRIMARY KEY,
                     messages TEXT NOT NULL,
                     created_at TEXT NOT NULL,
-                    last_active TEXT NOT NULL
+                    last_active TEXT NOT NULL,
+                    user_id TEXT NOT NULL DEFAULT 'default',
+                    summary TEXT NOT NULL DEFAULT '',
+                    compacted_count INTEGER NOT NULL DEFAULT 0
                 )
             """)
+            # 兼容旧库：缺列则补充（表结构随功能演进的迁移）
+            cols = [row[1] for row in conn.execute("PRAGMA table_info(sessions)").fetchall()]
+            if "user_id" not in cols:
+                conn.execute("ALTER TABLE sessions ADD COLUMN user_id TEXT NOT NULL DEFAULT 'default'")
+            if "summary" not in cols:
+                conn.execute("ALTER TABLE sessions ADD COLUMN summary TEXT NOT NULL DEFAULT ''")
+            if "compacted_count" not in cols:
+                conn.execute("ALTER TABLE sessions ADD COLUMN compacted_count INTEGER NOT NULL DEFAULT 0")
+            # 用户维度查询索引（按用户 + 最近活跃查会话）
+            conn.execute(
+                "CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id, last_active)"
+            )
 
     @contextmanager
     def _get_conn(self):
@@ -118,13 +140,17 @@ class SessionManager:
         """写入 SQLite（插入或替换）"""
         with self._get_conn() as conn:
             conn.execute(
-                """INSERT OR REPLACE INTO sessions (session_id, messages, created_at, last_active)
-                   VALUES (?, ?, ?, ?)""",
+                """INSERT OR REPLACE INTO sessions
+                   (session_id, messages, created_at, last_active, user_id, summary, compacted_count)
+                   VALUES (?, ?, ?, ?, ?, ?, ?)""",
                 (
                     session_id,
                     json.dumps(data.messages, ensure_ascii=False),
                     data.created_at.isoformat(),
                     data.last_active.isoformat(),
+                    getattr(data, "user_id", "default"),
+                    getattr(data, "summary", ""),
+                    getattr(data, "compacted_count", 0),
                 )
             )
 
@@ -138,13 +164,18 @@ class SessionManager:
         try:
             with self._get_conn() as conn:
                 rows = conn.execute(
-                    "SELECT session_id, messages, created_at, last_active FROM sessions"
+                    "SELECT session_id, messages, created_at, last_active, user_id, summary, compacted_count "
+                    "FROM sessions"
                 ).fetchall()
 
             restored = 0
-            for session_id, messages_json, created_at, last_active in rows:
+            for session_id, messages_json, created_at, last_active, user_id, summary, compacted_count in rows:
                 messages = json.loads(messages_json)
-                data = SessionData(messages=messages, created_at=created_at, last_active=last_active)
+                data = SessionData(
+                    messages=messages, created_at=created_at,
+                    last_active=last_active, user_id=user_id or "default",
+                    summary=summary or "", compacted_count=compacted_count or 0,
+                )
                 if data.is_expired(self._ttl_minutes):
                     self._delete_from_db(session_id)
                     continue
@@ -158,14 +189,44 @@ class SessionManager:
 
     # ────────────── 核心 API ──────────────
 
-    def create_session(self) -> str:
+    def create_session(self, user_id: str = "default") -> str:
         session_id = uuid.uuid4().hex[:8]
-        data = SessionData()
+        data = SessionData(user_id=user_id)
         with self._lock:
             self._sessions[session_id] = data
         self._save_to_db(session_id, data)
-        logger.info(f"[SessionManager] 创建会话: {session_id}")
+        logger.info(f"[SessionManager] 创建会话: {session_id} (user={user_id})")
         return session_id
+
+    def list_sessions(self, user_id: str = None) -> list:
+        """
+        会话概要列表（可按用户过滤），按最近活跃倒序
+
+        多用户隔离：user_id 为空时返回全部（管理员视角），
+        传入 user_id 时只返回该用户自己的会话。
+        """
+        with self._lock:
+            items = list(self._sessions.items())
+
+        result = []
+        for sid, data in items:
+            if user_id and getattr(data, "user_id", "default") != user_id:
+                continue
+            result.append({
+                "session_id": sid,
+                "user_id": getattr(data, "user_id", "default"),
+                "message_count": len(data.messages),
+                "created_at": data.created_at.isoformat(),
+                "last_active": data.last_active.isoformat(),
+            })
+        result.sort(key=lambda x: x["last_active"], reverse=True)
+        return result
+
+    def get_owner(self, session_id: str) -> Optional[str]:
+        """取会话归属用户（用于权限校验）；会话不存在返回 None"""
+        with self._lock:
+            data = self._sessions.get(session_id)
+        return getattr(data, "user_id", None) if data else None
 
     def get_messages(self, session_id: str) -> list:
         with self._lock:
@@ -202,6 +263,50 @@ class SessionManager:
         messages = self.get_messages(session_id)
         return messages[-(rounds * 2):]
 
+    def get_context_window(self, session_id: str, max_chars: int = None) -> list:
+        """
+        上下文窗口 = 【更早对话的压缩摘要】 + 窗口内的近期原文
+
+        三层处理：
+        - 第一层（轮数）：存储层由 `max_stored_rounds` 兜底，避免过早丢原文
+        - 第二层（字符）：按总字符数从最旧开始裁剪，**始终保留最新消息**
+        - 第三层（压缩 Compaction）：被挤出窗口的历史不再「硬丢」，而是**增量摘要**成
+          一段文本，以 system 消息注入到窗口之前 —— 信息不丢，Token 还省
+
+        返回：可直接拼进模型 messages 的列表
+        """
+        session = self._sessions.get(session_id)
+        messages = self.get_messages(session_id)
+        if max_chars is None:
+            max_chars = agent_conf.get("session", {}).get("max_history_chars", 4000)
+
+        # 1) 从最新往回累加，划出窗口
+        total = 0
+        kept = []
+        for m in reversed(messages):
+            total += len(m.get("content", ""))
+            if total > max_chars and kept:
+                break
+            kept.append(m)
+        kept.reverse()
+
+        # 2) 窗口之外的部分 → 增量压缩（只压「新被挤出」的，不重复压已压过的）
+        dropped_end = len(messages) - len(kept)
+        prefix = []
+        if session is not None and compaction_service.enabled and dropped_end > 0:
+            newly_dropped = messages[session.compacted_count: dropped_end]
+            if newly_dropped:
+                session.summary = compaction_service.compact(newly_dropped, session.summary)
+                session.compacted_count = dropped_end
+                self._save_to_db(session_id, session)
+            if session.summary:
+                prefix.append({
+                    "role": "system",
+                    "content": f"【更早对话的摘要（已压缩，非原文）】{session.summary}",
+                })
+
+        return prefix + kept
+
     def clear_session(self, session_id: str):
         with self._lock:
             self._sessions.pop(session_id, None)
@@ -224,7 +329,8 @@ class SessionManager:
     # ────────────── 内部方法 ──────────────
 
     def _trim(self, session: SessionData):
-        max_messages = self._max_rounds * 2
+        """存储层硬上限（比上下文窗口大得多，给压缩留素材）"""
+        max_messages = self._max_stored_rounds * 2
         if len(session.messages) > max_messages:
             session.messages = session.messages[-max_messages:]
 
