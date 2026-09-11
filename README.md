@@ -123,8 +123,10 @@ python agent/react_agent.py
 python -m api.main
 # 浏览器打开 http://localhost:8000/docs
 
-# 方式三：Docker
-docker compose up --build -d
+# 方式三：Docker（一键起「后端 API + 前端 nginx」两个容器）
+docker compose up -d --build
+#   前端（nginx 托管 SPA + /api 反代）→ http://localhost:8090
+#   后端 Swagger                     → http://localhost:8000/docs
 ```
 
 ### 6. 前端界面（React + Vite）
@@ -157,9 +159,13 @@ cp .env.example .env    # Windows: copy .env.example .env
 
 ```bash
 docker compose up -d --build
-docker compose ps          # 状态应为 healthy
+docker compose ps          # api 与 web 两个容器，状态应为 healthy
 curl http://localhost:8000/api/health
 ```
+
+- 前端界面：<http://localhost:8090>（nginx 托管 SPA，并把 `/api` 反代到后端容器）
+- 后端 Swagger：<http://localhost:8000/docs>
+- 容器化下验证流式没被代理缓冲：`python evaluation/verify_nginx_sse.py`
 
 ### 3. 部署到云服务器（Ubuntu 22.04）
 
@@ -181,8 +187,8 @@ docker compose up -d --build
 curl http://localhost:8000/api/health
 ```
 
-- 云厂商安全组/防火墙放行 **8000** 端口
-- 浏览器打开 `http://你的公网IP:8000/docs` 即上线成功
+- 云厂商安全组/防火墙放行 **8000**（后端）与 **8090**（前端）端口
+- 浏览器打开 `http://你的公网IP:8090` 即上线成功（前端界面）；`http://你的公网IP:8000/docs` 是后端接口文档
 
 ### 4. 进阶：域名 + HTTPS
 

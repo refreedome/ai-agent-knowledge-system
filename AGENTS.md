@@ -15,7 +15,7 @@
 | 编排层 | `agent/` | LangGraph ReAct Agent、中间件 |
 | 工具层 | `agent/tools/` | 工具注册表（角色权限）+ 各工具实现 |
 | 知识层 | `rag/` | BM25+向量混合检索、RRF 融合、文档解析入库 |
-| 记忆层 | `database/` | 短期记忆（滑动窗口+裁剪）、长期记忆（JSON 持久化） |
+| 记忆层 | `database/` | 短期窗口（两道闸）+ **Compaction 压缩** + 长期记忆（JSON 持久化） |
 | 可观测层 | `infrastructure/` | Trace 链路 + Metrics（P50/P95/Token） |
 
 ## 关键约定（违者 CI/评审阻断）
@@ -46,14 +46,25 @@ python evaluation/evaluate_retrieval.py --source local
 # RAGAS 生成质量评测（需真实 key + pip install -r requirements-eval.txt）
 python evaluation/evaluate_ragas.py --sample 10
 
-# Docker
-docker compose up --build -d
+# Docker（一键起「后端 API + 前端 nginx」两个容器）
+docker compose up -d --build
+#   前端（nginx 托管 SPA + /api 反代）→ http://localhost:8090
+#   后端 Swagger（可直接调接口）      → http://localhost:8000/docs
+#   密钥放 .env（模板见 .env.example）
+
+# 依赖审计（新增依赖前先跑：查出「代码 import 了、但 requirements 没写」的包）
+python evaluation/check_requirements.py
+
+# 容器化后验证 SSE 没被代理缓冲（经 nginx 打流式接口）
+python evaluation/verify_nginx_sse.py
 ```
 
-## 记忆设计（两层 + 多用户隔离）
+## 记忆设计（四层 + 多用户隔离）
 
-- **短期记忆**：`SessionManager` 滑动窗口（max_rounds 轮）+ 字符级裁剪（max_history_chars），SQLite 持久化，服务重启可恢复。
+- **窗口层**：`SessionManager` 滑动窗口（`max_rounds` 轮）+ 字符级裁剪（`max_history_chars`）——决定什么能进模型。
+- **压缩层（Compaction）**：被挤出窗口的历史**不再硬丢**，交给 `database/compaction.py` 做**增量摘要**（`summary` + `compacted_count` 游标，只压新掉出去的部分并合并上一版摘要）；LLM 失败时降级为规则生成的「结构化笔记」；摘要以 system 消息插在窗口之前。存储层 `max_stored_rounds=100` 保证「有得压」。
 - **长期记忆**：`LongTermMemory` 跨会话持久化用户偏好事实（JSON），启发式抽取，回答时注入上下文。
+- **持久化层**：SQLite（`sessions` 表），服务重启可恢复。
 - **多用户隔离**：`sessions` 表带 `user_id` 列（含旧库 ALTER 迁移 + `(user_id, last_active)` 索引）；`/api/sessions?user_id=` 按用户过滤；长期记忆按 `user_id` 分桶；前端侧栏可切换用户。
   - 现状是**轻量标识隔离**（无鉴权）；生产环境需接 JWT/SSO 并把 user_id 与身份体系绑定。
 
@@ -110,3 +121,17 @@ docker compose up --build -d
    `Select-String -Path src\*.css -Pattern "text-align"` 全局扫一遍。
    解决：`index.css` 只保留极简 reset（`box-sizing` / `margin` / `#root{min-height}`），**所有布局与主题一律写 `App.css`**；同时给 `.turn-body` 显式加 `text-align: left` 兜底，防止再被全局样式污染。
    教训：**脚手架模板的全局样式是隐性 bug 源**——`<div id="root">` 上的 `text-align` 一行就能让整个应用的文字对齐出错，而且它不在你写的 CSS 文件里，很容易查半天。
+
+6. **容器起来了但应用崩溃：`ImportError` / `ModuleNotFoundError`**
+   现象：本地 `python -m api.main` 一切正常，`docker compose up -d --build` 后容器反复重启，日志报缺包（实例：`Could not import dashscope`、`Form data requires "python-multipart"`）。
+   原因：**`requirements.txt` 漏写依赖，而本地环境有历史包袱**。三类最容易漏：
+   ① 可选依赖（`dashscope` 是 `langchain-community` 的可选件，只在真正初始化 ChatTongyi 时才校验）；
+   ② **不被代码直接 import 的包**（`python-multipart` 由 FastAPI 内部使用，import 扫描查不出来）；
+   ③ 一直靠别的包间接带进来的（`PyYAML`）。
+   解决：跑 `python evaluation/check_requirements.py`——AST 扫全项目 import → 反查发行版 → 与 requirements 比对，一次列出所有缺失项。**新增依赖后请先跑它。**
+
+7. **`docker compose ps` 里容器一直是 `unhealthy`**
+   现象：服务其实能正常访问，但状态显示 unhealthy（并连带 `depends_on: service_healthy` 的下游服务起不来）。
+   原因：健康检查命令在镜像里不存在。经典案例是 `test: ["CMD", "curl", "-f", ...]`——**运行镜像基于 `python:3.12-slim`，根本没装 curl**，执行直接报 `exec: "curl": executable file not found`。
+   解决：用镜像里已有的东西探活（我们改成 `python -c "import urllib.request..."`）；另外给 `start_period`（本地设了 60s），因为启动要加载向量库、构建 BM25 索引。
+   排查：`docker inspect <容器> --format '{{json .State.Health}}'` 看最近几次探测的输出，一眼就能看出是命令不存在还是接口没起来。
