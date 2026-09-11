@@ -1,0 +1,35 @@
+# 用户与角色配置（演示实现；生产环境应接入 JWT/SSO 与统一用户中心）
+#
+# 角色权限说明：
+#   admin —— 可对话、可上传文档入库、可查看全部用户会话
+#   user  —— 只可对话、只能查看自己的会话
+#
+# 注意：这里是「轻量演示级」的身份与授权，user_id 由前端声明。
+# 生产改造要点：身份由 JWT/SSO 签发（不可伪造），角色由用户中心下发，
+# 权限判定收敛到统一网关/中间件，并记录操作审计日志。
+
+default_user: guest
+
+users:
+  admin:
+    display_name: 管理员
+    role: admin
+  alice:
+    display_name: 爱丽丝
+    role: user
+  bob:
+    display_name: 鲍勃
+    role: user
+  guest:
+    display_name: 访客
+    role: user
+
+roles:
+  admin:
+    permissions:
+      - chat
+      - upload
+      - view_all_sessions
+  user:
+    permissions:
+      - chat

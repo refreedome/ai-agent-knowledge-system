@@ -28,14 +28,18 @@ if prompt:
         res_stream = st.session_state["agent"].execute_stream(prompt)
 
         def capture(generator, cache_list):
-
-            for chunk in generator:
-                cache_list.append(chunk)
-
+            """消费 Agent 的 dict 事件流，只把 token 文本喂给 Streamlit（跳过思考/工具事件）"""
+            text = ""
+            for event in generator:
+                chunk = event.get("content", "") if isinstance(event, dict) else str(event)
+                if not chunk or (isinstance(event, dict) and event.get("type") != "token"):
+                    continue
+                text += chunk
                 for char in chunk:
                     time.sleep(0.01)
                     yield char
+            cache_list.append(text)
 
         st.chat_message("assistant").write_stream(capture(res_stream, response_messages))
-        st.session_state["message"].append({"role": "assistant", "content": response_messages[-1]})
+        st.session_state["message"].append({"role": "assistant", "content": response_messages[-1] if response_messages else ""})
         st.rerun()
