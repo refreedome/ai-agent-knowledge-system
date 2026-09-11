@@ -137,7 +137,9 @@ class TestRagSummarizeService:
         with patch.object(RagSummarizeService, "_init_chain", return_value=mock_chain):
             with patch.object(RagSummarizeService, "_init_bm25_index", return_value=None):
                 rag = RagSummarizeService()
-                result = rag.rag_summarize("什么是RAG？")
+                # Mock 检索层，隔离对向量库 / Embedding API 的真实调用（无 key 离线可跑）
+                with patch.object(rag, "retriever_docs", return_value=[Document(page_content="测试资料")]):
+                    result = rag.rag_summarize("什么是RAG？")
 
         assert isinstance(result, str)
         assert len(result) > 0
