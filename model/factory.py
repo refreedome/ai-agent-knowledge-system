@@ -51,12 +51,19 @@ class ChatModelFactory(BaseModelFactory):
     def generator(self) -> Optional[Embeddings | BaseChatModel]:
         """
         生成聊天模型实例
-        
+
         返回：
         - ChatTongyi模型实例（通义千问）
+
+        ⚠️ 必须显式开启 streaming=True：
+        ChatTongyi 默认 streaming=False，此时它内部走非流式请求，
+        整段生成完才返回一条完整消息——即使上层用 LangGraph 的
+        stream_mode="messages" 也只能拿到「整条消息」而不是 token 增量，
+        最终前端表现就是「一块一块蹦」而不是逐字输出。
+        （实测：streaming=True → 10 个增量片段；默认 → 1 个整段片段）
         """
-        # 从配置中读取模型名称，创建对应的聊天模型
-        return ChatTongyi(model=rag_conf["chat_model_name"])
+        # 从配置中读取模型名称，创建对应的聊天模型（开启流式）
+        return ChatTongyi(model=rag_conf["chat_model_name"], streaming=True)
 
 
 class EmbeddingsFactory(BaseModelFactory):
